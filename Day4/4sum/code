@@ -1,0 +1,33 @@
+vector<vector<int>> fourSum(vector<int>& nums, int target) {
+    vector<vector<int>>ans;
+    sort(nums.begin(), nums.end());
+    int n = nums.size();
+    for (int i = 0; i < n - 3; ++i) {
+        int target1 = target - nums[i];
+        for (int j = i + 1; j < n - 2; ++j) {
+            int target2 = target1 - nums[j];
+            int l = j + 1;
+            int h = n - 1;
+            while (l < h) {
+                if (nums[l] + nums[h] == target2) {
+                    ans.push_back({nums[i], nums[j], nums[l], nums[h]});
+                    while (l < h and nums[l] == nums[l + 1])++l; //Once we have found a quadruple then to have distinct sets of those i have to keep
+                    //on moving until the this element is equalt ot it's next
+                    ++l;  //Once this element is not equal to next so just move to the next as for ex if it is 2 2 2 3 the loop will stop at last 2 so
+                    //point to 3
+                    while (h > l and nums[h] == nums[h - 1])h--; //Similarily keep on moving until unequal
+                    h--;
+                } else if (nums[l] + nums[h] < target2) {
+                    while (l < h and nums[l] == nums[l + 1])++l;
+                    ++l;
+                } else {
+                    while (h > l and nums[h] == nums[h - 1])h--;
+                    h--;
+                }
+            }
+            while (j < n - 1 and nums[j] == nums[j + 1])j++; //Because we again have same pairs so keep moving until unequal
+        }
+        while (i < n - 1 and nums[i] == nums[i + 1])i++;
+    }
+    return ans;
+}
